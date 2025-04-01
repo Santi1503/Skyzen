@@ -1,0 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-gradient-to-br from-blue-100 to-blue-200 min-h-screen font-sans;
+}
+
+.glass {
+  @apply bg-white bg-opacity-20 backdrop-blur-lg rounded-3xl border border-opacity-20 border-white shadow-lg;
+}
