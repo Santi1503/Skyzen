@@ -11,16 +11,7 @@ export async function getWeatherData(lat, lon) {
 
     // Get future forecast
     const forecastResponse = await axios.get(
-      `https://api.openweathermap.org/data/2.5/forecast`,
-      {
-        params: {
-          lat,
-          lon,
-          appid: API_KEY,
-          units: "metric",
-          lang: "es",
-        },
-      }
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&lang=en&appid=${API_KEY}`
     );
 
     return {
@@ -46,7 +37,7 @@ function processForecastData(data) {
         humidity: [],
         weather: [],
         wind: [],
-        icon: "",
+        icons: [],
       };
     }
 
@@ -61,21 +52,23 @@ function processForecastData(data) {
     }
   });
 
-  return Object.values(dailyData).map((day) => {
-    return {
-      date: day.date,
-      temp_min: Math.min(...day.temps),
-      temp_max: Math.max(...day.temps),
-      avg_humidity: Math.round(
-        day.humidity.reduce((a, b) => a + b, 0) / day.humidity.length
-      ),
-      most_common_weather: getMostFrequent(day.weather),
-      avg_wind: (day.wind.reduce((a, b) => a + b, 0) / day.wind.length).toFixed(
-        1
-      ),
-      icon: day.icon || day.icon || data.list[0].weather[0].icon,
-    };
-  });
+  return Object.values(dailyData)
+    .slice(0, 5)
+    .map((day) => {
+      return {
+        date: day.date,
+        temp_min: Math.min(...day.temps),
+        temp_max: Math.max(...day.temps),
+        avg_humidity: Math.round(
+          day.humidity.reduce((a, b) => a + b, 0) / day.humidity.length
+        ),
+        most_common_weather: getMostFrequent(day.weather),
+        avg_wind: (
+          day.wind.reduce((a, b) => a + b, 0) / day.wind.length
+        ).toFixed(1),
+        icon: day.icon || day.icon || data.list[0].weather[0].icon,
+      };
+    });
 }
 
 function getMostFrequent(arr) {
