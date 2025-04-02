@@ -65,7 +65,7 @@ const LoadingScreen = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.3 }}
       >
-        Weather App
+        Tempester
       </motion.h1>
 
       <motion.p

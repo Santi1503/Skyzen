@@ -1,6 +1,6 @@
 {
-  "name": "Weather App",
-  "short_name": "Weather",
+  "name": "Tempester",
+  "short_name": "Tempester",
   "theme_color": "#3b82f6",
   "background_color": "#dbeafe",
   "display": "standalone",
