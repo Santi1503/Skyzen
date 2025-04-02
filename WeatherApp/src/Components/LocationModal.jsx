@@ -34,15 +34,7 @@ const LocationModal = ({ isOpen, onClose, onAddLocation }) => {
 
     try {
       const response = await axios.get(
-        `https://api.openweathermap.org/geo/1.0/direct`,
-        {
-          params: {
-            q: searchQuery,
-            limit: 5,
-            appid: API_KEY,
-          },
-        }
-      );
+        `https://api.openweathermap.org/data/2.5/weatherq=${searchQuery}&units=metric&appid=${API_KEY}`);
 
       setSearchResults(
         response.data.map((item) => ({
