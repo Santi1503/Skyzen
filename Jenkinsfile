@@ -6,7 +6,7 @@ pipeline {
         AWS_PEM = "/var/jenkins_home/aws/santi.pem"
 
         /** DEPLOYMENT **/
-        APP_NAME = "weather-app"
+        APP_NAME = "skyzen"
         PORT = "3003"
         ENV = "/home/ubuntu/envs/${APP_NAME}/env"
     }

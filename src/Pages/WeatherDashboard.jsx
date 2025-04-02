@@ -58,7 +58,7 @@ const WeatherDashboard = ({
         variants={itemVariants}
         className="flex justify-between items-center"
       >
-        <h1 className="text-3xl font-bold text-blue-900">Tempester</h1>
+        <h1 className="text-3xl font-bold text-blue-900">Skyzen</h1>
         <motion.button
           onClick={onAddLocation}
           className="glass p-3 rounded-full"
