@@ -7,7 +7,7 @@ pipeline {
 
         /** DEPLOYMENT **/
         APP_NAME = "skyzen"
-        PORT = "3003"
+        PORT = "3004"
         ENV = "/home/ubuntu/envs/${APP_NAME}/env"
     }
 
