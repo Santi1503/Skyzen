@@ -16,6 +16,7 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [weatherData, setWeatherData] = useState({});
   const [error, setError] = useState(null);
+  const [selectedLocationName, setSelectedLocationName] = useState("");
 
   useEffect(() => {
     setTimeout(() => {
@@ -43,6 +44,8 @@ function App() {
                 lon,
                 name: locationName,
               });
+
+              setSelectedLocationName(locationName);
             } catch (error) {
               console.error("Error fetching location name:", error);
               setCurrentLocation({
@@ -50,18 +53,27 @@ function App() {
                 lon,
                 name: "Unknown Location",
               });
+              setSelectedLocationName("Unknown Location");
             }
           },
           (err) => {
             console.error(err);
             setError("No se puede acceder a la ubicación actual");
+
+            if (savedLocations.length > 0) {
+              setSelectedLocationName(savedLocations[0].name);
+            }
           }
         );
       } else {
         setError("Tu navegador no soporta geolocalización");
+
+        if (savedLocations.length > 0) {
+          setSelectedLocationName(savedLocations[0].name);
+        }
       }
     }, 1500);
-  }, []);
+  }, [savedLocations]);
 
   useEffect(() => {
     // Load weather data
@@ -103,6 +115,7 @@ function App() {
   const addLocation = (newLocation) => {
     setSavedLocations((prev) => [...prev, newLocation]);
     setIsModalOpen(false);
+    setSelectedLocationName(newLocation.name);
   };
 
   const removeLocation = (locationName) => {
@@ -114,7 +127,25 @@ function App() {
       delete newData[locationName];
       return newData;
     });
+
+    if (selectedLocationName === locationName) {
+      if (currentLocation) {
+        setSelectedLocationName(currentLocation.name);
+      } else if (savedLocations.length > 1) {
+        // Find the next available location that's not the one being removed
+        const nextLocation = savedLocations.find(
+          (loc) => loc.name !== locationName
+        );
+        if (nextLocation) {
+          setSelectedLocationName(nextLocation.name);
+        }
+      } else {
+        setSelectedLocationName("");
+      }
+    }
   };
+
+  const selectedLocationWeather = weatherData[selectedLocationName];
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">

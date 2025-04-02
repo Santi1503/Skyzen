@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 const SavedLocationsList = ({
   locations,
   selectedLocation,
-  onSelectedLocation,
+  onSelectLocation,
   onRemoveLocation,
   weatherData,
 }) => {
@@ -29,7 +29,7 @@ const SavedLocationsList = ({
               ? "bg-blue-500 text-white"
               : "hover:bg-blue-100"
           }`}
-          onClick={() => onSelectedLocation(location.name)}
+          onClick={() => onSelectLocation(location.name)}
           whileHover={{ scale: 1.02 }}
         >
           <div className="flex flex-col">

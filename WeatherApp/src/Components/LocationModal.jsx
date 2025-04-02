@@ -10,7 +10,7 @@ const LocationModal = ({ isOpen, onClose, onAddLocation }) => {
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState(null);
 
-  const API_KEY = import.meta.env.OPEN_WEATHER_API;
+  const API_KEY = import.meta.env.VITE_OPEN_WEATHER_API;
 
   const modalVariants = {
     hidden: { opacity: 0, scale: 0.9 },
@@ -34,7 +34,7 @@ const LocationModal = ({ isOpen, onClose, onAddLocation }) => {
 
     try {
       const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${searchQuery}&units=metric&appid=${API_KEY}`
+        `https://api.openweathermap.org/geo/1.0/direct?q=${searchQuery}&units=metric&appid=${API_KEY}`
       );
 
       setSearchResults(
