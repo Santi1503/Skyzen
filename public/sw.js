@@ -1,17 +1,19 @@
 // Nombre del cache
-const CACHE_NAME = 'clima-app-cache-v1';
+const CACHE_NAME = 'weather-app-v1';
 
 // Archivos para cachear inicialmente
 const urlsToCache = [
   '/',
   '/index.html',
-  '/assets/index.css', // Ajusta según la estructura que genera Vite
-  '/assets/index.js',  // Ajusta según la estructura que genera Vite
-  // Agrega otros recursos estáticos que necesites cachear
-  '/icons/sun.svg',
-  '/icons/cloud.svg',
-  '/icons/rain.svg',
-  '/icons/snow.svg',
+  '/manifest.json',
+  '/icons/icon-72x72.png',
+  '/icons/icon-96x96.png',
+  '/icons/icon-128x128.png',
+  '/icons/icon-144x144.png',
+  '/icons/icon-152x152.png',
+  '/icons/icon-192x192.png',
+  '/icons/icon-384x384.png',
+  '/icons/icon-512x512.png'
 ];
 
 // Instalación del Service Worker
@@ -27,12 +29,11 @@ self.addEventListener('install', (event) => {
 
 // Activación del Service Worker
 self.addEventListener('activate', (event) => {
-  const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
+          if (cacheName !== CACHE_NAME) {
             // Elimina los caches antiguos que no estén en la lista blanca
             return caches.delete(cacheName);
           }
@@ -68,10 +69,7 @@ self.addEventListener('fetch', (event) => {
             // Guarda la respuesta en el cache
             caches.open(CACHE_NAME)
               .then((cache) => {
-                // No cachear llamadas a la API de clima
-                if (!event.request.url.includes('api.weather')) {
-                  cache.put(event.request, responseToCache);
-                }
+                cache.put(event.request, responseToCache);
               });
 
             return response;
