@@ -5,6 +5,7 @@ pipeline {
         /** DEPLOYMENT **/
         APP_NAME = "skyzen"
         SCANNER_HOME = tool 'sonarqube'
+        ENV = "/var/jenkins_home/envs/${APP_NAME}/env"
     }
 
     stages {
@@ -22,6 +23,7 @@ pipeline {
             steps {
                 echo '====== DEPLOYING ======'
                 sh """
+                    cp ${ENV} .
                     docker build . -f Dockerfile -t ${SERVER_REG}/${APP_NAME}:${BRANCH_NAME}-${BUILD_ID}
                     docker login 
                     docker push ${SERVER_REG}/${APP_NAME}:${BRANCH_NAME}-${BUILD_ID}

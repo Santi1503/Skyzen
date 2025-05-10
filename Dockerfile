@@ -1,6 +1,7 @@
 FROM node as stage-1
 WORKDIR /app
 COPY . .
+COPY env .env
 
 RUN npm install
 
