@@ -2,15 +2,9 @@ pipeline {
     agent any
     environment {
         SERVER_REG = "balgittuber"
-        AWS_SERVER = "ubuntu@34.235.175.49"
-        AWS_PEM = "/var/jenkins_home/aws/santi.pem"
-
         /** DEPLOYMENT **/
         APP_NAME = "skyzen"
-        PORT = "3004"
-        ENV = "/home/ubuntu/envs/${APP_NAME}/env"
         SCANNER_HOME = tool 'sonarqube'
-
     }
 
     stages {
@@ -32,18 +26,8 @@ pipeline {
                     docker login 
                     docker push ${SERVER_REG}/${APP_NAME}:${BRANCH_NAME}-${BUILD_ID}
 
-                    ssh -i ${AWS_PEM} ${AWS_SERVER} \"
-                    if docker ps -a --format '{{.Names}}' | grep -Eq '^${APP_NAME}\$'; then
-                        echo 'Stopping and removing existing container: ${APP_NAME}'
-                        docker stop ${APP_NAME}
-                        docker rm ${APP_NAME}
-                    fi
-                    \"
-
-                    ssh -i ${AWS_PEM} ${AWS_SERVER} \"
-                    # Run the new container
-                    docker run -d --env-file ${ENV} --name ${APP_NAME} --restart always -p ${PORT}:5173 ${SERVER_REG}/${APP_NAME}:${BRANCH_NAME}-${BUILD_ID}
-                    \"
+                    export KUBECONFIG=/var/jenkins_home/.kube/kubeconfig.yaml
+                    kubectl set image deployment/${APP_NAME} ${APP_NAME}=${SERVER_REG}/${APP_NAME}:${BRANCH_NAME}-${BUILD_ID}
                     """
             }
         }
